@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Modern Color System - inspired by Linear & Vercel */
+    --color-bg-primary: #fafafa;
+    --color-bg-secondary: #ffffff;
+    --color-bg-tertiary: #f4f4f5;
+    
+    --color-text-primary: #09090b;
+    --color-text-secondary: #52525b;
+    --color-text-tertiary: #a1a1aa;
+    
+    --color-accent: #3b82f6;
+    --color-accent-hover: #2563eb;
+    --color-accent-light: #dbeafe;
+    
+    --color-border: #e4e4e7;
+    --color-border-hover: #d4d4d8;
+    
+    /* Shadows - Apple-inspired */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    
+    /* Blur effects - Vercel-inspired */
+    --blur-sm: blur(4px);
+    --blur-md: blur(8px);
+    --blur-lg: blur(16px);
+  }
+  
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+}
+
+@layer utilities {
+  /* Glass morphism - Stripe-inspired */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: var(--blur-md);
+    -webkit-backdrop-filter: var(--blur-md);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  
+  /* Gradient text - Modern trend */
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600;
+  }
+  
+  /* Smooth animations */
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
