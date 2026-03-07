@@ -133,7 +133,7 @@ function ProjectCard({ project }: { project: ProjectData }) {
       {/* Content Grid */}
       <div className="grid gap-8">
         {/* Problem */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
           <h4 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-primary mb-4">
             <span className="text-2xl" aria-hidden="true">
               💡
@@ -144,7 +144,7 @@ function ProjectCard({ project }: { project: ProjectData }) {
         </div>
 
         {/* Solution */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
           <h4 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-primary mb-4">
             <span className="text-2xl" aria-hidden="true">
               🎯
@@ -164,7 +164,7 @@ function ProjectCard({ project }: { project: ProjectData }) {
         </div>
 
         {/* Challenges */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
           <h4 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-primary mb-4">
             <span className="text-2xl" aria-hidden="true">
               🔧
@@ -186,7 +186,7 @@ function ProjectCard({ project }: { project: ProjectData }) {
         </div>
 
         {/* Learnings */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
           <h4 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-primary mb-4">
             <span className="text-2xl" aria-hidden="true">
               📚

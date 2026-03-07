@@ -78,7 +78,7 @@ export default function HeroSection() {
         // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(37, 99, 235, 0.6)'; // CTA color with opacity
+        ctx.fillStyle = 'rgba(139, 111, 71, 0.4)'; // Earth tone color
         ctx.fill();
 
         // Draw connections
@@ -91,7 +91,7 @@ export default function HeroSection() {
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(otherParticle.x, otherParticle.y);
-            ctx.strokeStyle = `rgba(37, 99, 235, ${0.2 * (1 - distance / 150)})`;
+            ctx.strokeStyle = `rgba(139, 111, 71, ${0.15 * (1 - distance / 150)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -113,7 +113,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#FAF8F5] via-[#F5F1EB] to-[#EDE8E0]">
       {/* Animated background canvas */}
       <canvas
         ref={canvasRef}
@@ -124,7 +124,7 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         {/* Name */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-primary mb-6 animate-fade-in">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-primary mb-6 animate-fade-in">
           David Li
         </h1>
 
