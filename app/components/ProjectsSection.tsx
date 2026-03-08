@@ -2,17 +2,24 @@ import Image from 'next/image';
 
 interface ProjectData {
   title: string;
+  subtitle: string;
   images: string[];
   productUrl: string;
   problem: string;
   solution: string[];
   challenges: { title: string; solution: string }[];
   learnings: string[];
+  bgColor: string;
+  accentColor: string;
+  textColor: string;
+  badgeBg: string;
+  badgeText: string;
 }
 
 const projects: ProjectData[] = [
   {
-    title: 'AI写作助手 (Vibe Writing)',
+    title: 'AI写作助手',
+    subtitle: 'Vibe Writing',
     images: ['/images/vibe-writing-1.png', '/images/vibe-writing-2.png'],
     productUrl: 'https://vibewriting.readark.club/',
     problem:
@@ -42,9 +49,15 @@ const projects: ProjectData[] = [
       '富文本/Markdown编辑：可编辑标题 + Markdown编辑器 + 字数统计 + 导出/复制的一体化编辑闭环',
       '健壮的输入与错误处理：多输入源统一校验、异常兜底提示、可重试的失败处理',
     ],
+    bgColor: '#E84BE0',
+    accentColor: '#FFFFFF',
+    textColor: '#FFFFFF',
+    badgeBg: 'rgba(255,255,255,0.25)',
+    badgeText: '#FFFFFF',
   },
   {
     title: '太平年介绍页',
+    subtitle: '一站式剧集信息平台',
     images: ['/images/taiping-1.png', '/images/taiping-2.png'],
     productUrl: 'https://tai-ping-year.netlify.app/',
     problem:
@@ -76,153 +89,240 @@ const projects: ProjectData[] = [
       '性能优化方法论：图片WebP/懒加载/多分辨率、首屏加载<3秒目标的拆解与落地',
       '内容可视化组件选型：地图/时间线适合用D3/ECharts或自定义组件，理解"交互是为信息服务"的设计原则',
     ],
+    bgColor: '#FFC940',
+    accentColor: '#1A1A2E',
+    textColor: '#1A1A2E',
+    badgeBg: 'rgba(26,26,46,0.12)',
+    badgeText: '#1A1A2E',
   },
 ];
 
-function ProjectCard({ project }: { project: ProjectData }) {
-  return (
-    <article className="mb-20 lg:mb-32">
-      {/* Project Title */}
-      <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-8 text-center">
-        {project.title}
-      </h3>
+interface DetailCardProps {
+  title: string;
+  items: string[];
+  accentColor: string;
+  textColor: string;
+  bgOpacity?: string;
+}
 
-      {/* Images and CTA */}
-      <div className="flex flex-col lg:flex-row gap-6 mb-10 items-start">
-        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+function DetailCard({ title, items, accentColor, textColor, bgOpacity = 'rgba(255,255,255,0.18)' }: DetailCardProps) {
+  return (
+    <div
+      className="rounded-2xl p-5 sm:p-6"
+      style={{ backgroundColor: bgOpacity }}
+    >
+      <h4
+        className="text-base sm:text-lg font-bold mb-3"
+        style={{ color: textColor }}
+      >
+        {title}
+      </h4>
+      <ul className="space-y-2">
+        {items.map((item, idx) => (
+          <li key={idx} className="flex items-start gap-2">
+            <span
+              className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full"
+              style={{ backgroundColor: accentColor }}
+              aria-hidden="true"
+            />
+            <span className="text-sm leading-relaxed" style={{ color: textColor, opacity: 0.85 }}>
+              {item}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+interface ChallengesCardProps {
+  challenges: { title: string; solution: string }[];
+  accentColor: string;
+  textColor: string;
+}
+
+function ChallengesCard({ challenges, accentColor, textColor }: ChallengesCardProps) {
+  return (
+    <div
+      className="rounded-2xl p-5 sm:p-6"
+      style={{ backgroundColor: 'rgba(255,255,255,0.18)' }}
+    >
+      <h4
+        className="text-base sm:text-lg font-bold mb-3"
+        style={{ color: textColor }}
+      >
+        遇到的坑
+      </h4>
+      <div className="space-y-4">
+        {challenges.map((challenge, idx) => (
+          <div key={idx}>
+            <p
+              className="text-sm font-semibold mb-1"
+              style={{ color: textColor }}
+            >
+              [{idx + 1}] {challenge.title}
+            </p>
+            <p
+              className="text-sm leading-relaxed pl-3 border-l-2"
+              style={{ color: textColor, opacity: 0.75, borderColor: accentColor }}
+            >
+              {challenge.solution}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProjectSection({ project, index }: { project: ProjectData; index: number }) {
+  const isEven = index % 2 === 0;
+
+  return (
+    <section
+      aria-labelledby={`project-${index}-title`}
+      style={{ backgroundColor: project.bgColor }}
+      className="relative overflow-hidden"
+    >
+      {/* Decorative circle */}
+      <div
+        className="absolute top-[-80px] right-[-80px] w-64 h-64 rounded-full opacity-20 pointer-events-none"
+        style={{ backgroundColor: project.textColor }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-[-60px] left-[-60px] w-48 h-48 rounded-full opacity-15 pointer-events-none"
+        style={{ backgroundColor: project.textColor }}
+        aria-hidden="true"
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
+        {/* Project number + badge */}
+        <div className="mb-8 flex items-center gap-4">
+          <span
+            className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest"
+            style={{ backgroundColor: project.badgeBg, color: project.badgeText }}
+          >
+            项目 {String(index + 1).padStart(2, '0')}
+          </span>
+        </div>
+
+        {/* Header: Title + CTA */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
+          <div>
+            <p
+              className="text-base sm:text-lg font-semibold mb-2 opacity-70"
+              style={{ color: project.textColor }}
+            >
+              {project.subtitle}
+            </p>
+            <h2
+              id={`project-${index}-title`}
+              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-none"
+              style={{ color: project.textColor }}
+            >
+              {project.title}
+            </h2>
+          </div>
+          <a
+            href={project.productUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 self-start lg:self-auto px-7 py-3.5 rounded-full text-base font-bold transition-all duration-200 hover:scale-105 hover:shadow-xl shadow-md cursor-pointer flex-shrink-0"
+            style={{
+              backgroundColor: project.textColor,
+              color: project.bgColor,
+            }}
+            aria-label={`访问 ${project.title}`}
+          >
+            访问产品
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+
+        {/* Images */}
+        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-12 ${isEven ? '' : 'sm:order-none'}`}>
           {project.images.map((img, idx) => (
             <div
               key={idx}
-              className="relative aspect-video overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white"
+              className="relative aspect-video overflow-hidden rounded-2xl shadow-2xl bg-white/10"
+              style={{ boxShadow: `0 24px 48px rgba(0,0,0,0.25)` }}
             >
               <Image
                 src={img}
                 alt={`${project.title} 截图 ${idx + 1}`}
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
                 loading="lazy"
               />
             </div>
           ))}
         </div>
-        <a
-          href={project.productUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="lg:self-center inline-flex items-center gap-2 px-6 py-3 bg-cta text-white rounded-xl font-medium hover:bg-cta/90 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer group"
+
+        {/* Problem statement */}
+        <div
+          className="rounded-2xl p-6 sm:p-8 mb-8"
+          style={{ backgroundColor: 'rgba(255,255,255,0.18)' }}
         >
-          访问产品
-          <svg
-            className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+          <h3
+            className="text-lg sm:text-xl font-bold mb-3"
+            style={{ color: project.textColor }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
-            />
-          </svg>
-        </a>
-      </div>
-
-      {/* Content Grid */}
-      <div className="grid gap-8">
-        {/* Problem */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-          <h4 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-primary mb-4">
-            <span className="text-2xl" aria-hidden="true">
-              💡
-            </span>
             痛点发现
-          </h4>
-          <p className="text-secondary/90 leading-relaxed">{project.problem}</p>
+          </h3>
+          <p
+            className="text-sm sm:text-base leading-relaxed"
+            style={{ color: project.textColor, opacity: 0.85 }}
+          >
+            {project.problem}
+          </p>
         </div>
 
-        {/* Solution */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-          <h4 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-primary mb-4">
-            <span className="text-2xl" aria-hidden="true">
-              🎯
-            </span>
-            解决方案
-          </h4>
-          <ul className="space-y-3">
-            {project.solution.map((item, idx) => (
-              <li key={idx} className="flex items-start gap-3">
-                <span className="text-cta mt-1 flex-shrink-0" aria-hidden="true">
-                  •
-                </span>
-                <span className="text-secondary/90">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Challenges */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-          <h4 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-primary mb-4">
-            <span className="text-2xl" aria-hidden="true">
-              🔧
-            </span>
-            遇到的坑
-          </h4>
-          <div className="space-y-4">
-            {project.challenges.map((challenge, idx) => (
-              <div key={idx}>
-                <p className="font-medium text-primary mb-2">
-                  [坑{idx + 1}] {challenge.title}
-                </p>
-                <p className="text-secondary/90 pl-4 border-l-2 border-cta/30">
-                  解决：{challenge.solution}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Learnings */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-          <h4 className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-primary mb-4">
-            <span className="text-2xl" aria-hidden="true">
-              📚
-            </span>
-            学到的技术
-          </h4>
-          <ul className="space-y-3">
-            {project.learnings.map((item, idx) => (
-              <li key={idx} className="flex items-start gap-3">
-                <span className="text-cta mt-1 flex-shrink-0" aria-hidden="true">
-                  •
-                </span>
-                <span className="text-secondary/90">{item}</span>
-              </li>
-            ))}
-          </ul>
+        {/* Detail cards grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          <DetailCard
+            title="解决方案"
+            items={project.solution}
+            accentColor={project.accentColor}
+            textColor={project.textColor}
+          />
+          <ChallengesCard
+            challenges={project.challenges}
+            accentColor={project.accentColor}
+            textColor={project.textColor}
+          />
+          <DetailCard
+            title="学到的技术"
+            items={project.learnings}
+            accentColor={project.accentColor}
+            textColor={project.textColor}
+          />
         </div>
       </div>
-    </article>
+    </section>
   );
 }
 
 export default function ProjectsSection() {
   return (
-    <section id="projects" className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-background">
-      <div className="max-w-6xl mx-auto">
-        {/* Section Title */}
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary text-center mb-16 sm:mb-20">
-          产品实践
+    <div id="projects">
+      {/* Section intro on white background */}
+      <div className="bg-white px-4 sm:px-6 lg:px-8 pt-20 pb-12 text-center">
+        <p className="text-sm font-bold uppercase tracking-widest text-secondary mb-4">产品实践</p>
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-dark leading-tight">
+          从想法到上线，
+          <br className="hidden sm:inline" />
+          用AI实现每一个创意
         </h2>
-
-        {/* Projects */}
-        {projects.map((project, idx) => (
-          <ProjectCard key={idx} project={project} />
-        ))}
       </div>
-    </section>
+
+      {/* Project sections */}
+      {projects.map((project, idx) => (
+        <ProjectSection key={idx} project={project} index={idx} />
+      ))}
+    </div>
   );
 }

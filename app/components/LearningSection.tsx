@@ -29,59 +29,142 @@ const pathways = [
   },
 ];
 
+const accentColors = ['#43E660', '#E84BE0', '#FFC940', '#8B5CF6', '#1A1A2E'];
+const accentTextColors = ['#1A1A2E', '#FFFFFF', '#1A1A2E', '#FFFFFF', '#FFFFFF'];
+
 export default function LearningSection() {
   return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
-      <div className="max-w-6xl mx-auto">
-        {/* Section Title */}
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary text-center mb-16 sm:mb-20">
-          学习心得
-        </h2>
+    <section
+      id="learning"
+      className="bg-white py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8"
+      aria-labelledby="learning-heading"
+    >
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header */}
+        <div className="text-center mb-16 sm:mb-20">
+          <p className="text-sm font-bold uppercase tracking-widest text-secondary mb-4">学习心得</p>
+          <h2
+            id="learning-heading"
+            className="text-4xl sm:text-5xl lg:text-6xl font-black text-dark leading-tight"
+          >
+            7次课，我学到的
+            <br className="hidden sm:inline" />
+            <span
+              className="inline-block px-4 py-1 rounded-2xl mt-2"
+              style={{ backgroundColor: '#43E660' }}
+            >
+              真正有用的东西
+            </span>
+          </h2>
+        </div>
 
-        {/* Cards Grid */}
-        <div className="grid lg:grid-cols-2 gap-8">
+        {/* Two column layout */}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           {/* AI Programming Insights */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg border border-slate-200 hover:shadow-xl transition-shadow duration-300">
-            <h3 className="flex items-center gap-3 text-2xl sm:text-3xl font-bold text-primary mb-6">
-              <span className="text-3xl" aria-hidden="true">
-                💡
-              </span>
-              AI编程心得
-            </h3>
-            <ol className="space-y-5">
+          <div>
+            <div className="flex items-center gap-3 mb-8">
+              <div
+                className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: '#43E660' }}
+                aria-hidden="true"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="#1A1A2E" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black text-dark">AI编程心得</h3>
+            </div>
+            <ol className="space-y-4" aria-label="AI编程心得列表">
               {insights.map((insight, idx) => (
-                <li key={idx} className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-cta text-white flex items-center justify-center text-sm font-medium">
+                <li key={idx} className="flex gap-4 group">
+                  <span
+                    className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-black transition-transform duration-200 group-hover:scale-110"
+                    style={{
+                      backgroundColor: accentColors[idx],
+                      color: accentTextColors[idx],
+                    }}
+                    aria-hidden="true"
+                  >
                     {idx + 1}
                   </span>
-                  <p className="text-secondary/90 leading-relaxed">{insight}</p>
+                  <div className="flex-1 pt-1">
+                    <p className="text-sm sm:text-base leading-relaxed text-secondary">
+                      {insight}
+                    </p>
+                  </div>
                 </li>
               ))}
             </ol>
           </div>
 
           {/* Learning Pathways */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg border border-slate-200 hover:shadow-xl transition-shadow duration-300">
-            <h3 className="flex items-center gap-3 text-2xl sm:text-3xl font-bold text-primary mb-6">
-              <span className="text-3xl" aria-hidden="true">
-                🎯
-              </span>
-              学习路径建议
-            </h3>
-            <ol className="space-y-5">
+          <div>
+            <div className="flex items-center gap-3 mb-8">
+              <div
+                className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: '#8B5CF6' }}
+                aria-hidden="true"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="#FFFFFF" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black text-dark">学习路径建议</h3>
+            </div>
+            <ol className="space-y-4" aria-label="学习路径建议列表">
               {pathways.map((pathway, idx) => (
-                <li key={idx} className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-cta text-white flex items-center justify-center text-sm font-medium">
-                    {idx + 1}
-                  </span>
-                  <div>
-                    <p className="font-semibold text-primary mb-1">{pathway.title}</p>
-                    <p className="text-secondary/80 text-sm leading-relaxed">{pathway.desc}</p>
+                <li key={idx} className="group">
+                  <div
+                    className="flex gap-4 p-4 sm:p-5 rounded-2xl border-2 border-transparent transition-all duration-200 hover:border-current hover:shadow-md"
+                    style={{
+                      backgroundColor: idx % 2 === 0 ? '#F8F8FF' : '#FFFEF5',
+                    }}
+                  >
+                    <span
+                      className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-black transition-transform duration-200 group-hover:scale-110"
+                      style={{
+                        backgroundColor: accentColors[idx % accentColors.length],
+                        color: accentTextColors[idx % accentTextColors.length],
+                      }}
+                      aria-hidden="true"
+                    >
+                      {idx + 1}
+                    </span>
+                    <div className="flex-1">
+                      <p className="font-bold text-dark mb-1 text-sm sm:text-base">{pathway.title}</p>
+                      <p className="text-secondary text-xs sm:text-sm leading-relaxed">{pathway.desc}</p>
+                    </div>
                   </div>
                 </li>
               ))}
             </ol>
           </div>
+        </div>
+
+        {/* Stats bar */}
+        <div
+          className="mt-16 sm:mt-20 rounded-3xl p-8 sm:p-10 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center"
+          style={{ backgroundColor: '#1A1A2E' }}
+          aria-label="学习成果统计"
+        >
+          {[
+            { value: '7', label: '次课程' },
+            { value: '2', label: '公网产品' },
+            { value: '5', label: '核心心得' },
+            { value: '100%', label: '用AI完成' },
+          ].map((stat, idx) => (
+            <div key={idx}>
+              <p
+                className="text-3xl sm:text-4xl font-black mb-1"
+                style={{ color: accentColors[idx] }}
+              >
+                {stat.value}
+              </p>
+              <p className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                {stat.label}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
