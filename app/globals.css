@@ -1,31 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --gradient-1: #667eea;
-    --gradient-2: #764ba2;
-    --gradient-3: #f093fb;
-    --gradient-4: #f5576c;
-  }
-
   body {
-    font-family: 'DM Sans', -apple-system, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: 
-      radial-gradient(circle at 20% 50%, rgba(246, 211, 101, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(241, 90, 108, 0.1) 0%, transparent 50%);
-    pointer-events: none;
+    @apply bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen;
   }
 }
