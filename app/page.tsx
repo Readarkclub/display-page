@@ -5,18 +5,18 @@ export default function Home() {
     <>
       <SkipLink />
       <main className="min-h-screen flex items-center justify-center p-6">
-        <div className="w-full max-w-md space-y-6">
+        <div className="w-full max-w-md space-y-8">
           {/* Avatar */}
           <div className="flex justify-center">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-4xl font-bold shadow-xl">
               DL
             </div>
           </div>
 
           {/* Name & Bio */}
-          <div className="text-center space-y-2">
-            <h1 className="text-2xl font-bold text-gray-900">David Li</h1>
-            <p className="text-gray-600">AI时代的产品探索者</p>
+          <div className="text-center space-y-3">
+            <h1 className="text-3xl font-bold text-gray-900">David Li</h1>
+            <p className="text-lg text-gray-600">AI时代的产品探索者</p>
           </div>
 
           {/* Links */}
@@ -25,18 +25,18 @@ export default function Home() {
               href="https://readarkclub.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="block bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5"
+              className="block bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] border border-white/50"
             >
-              <div className="font-medium text-gray-900">读书俱乐部</div>
-              <div className="text-sm text-gray-500 mt-1">图书展示与管理平台</div>
+              <div className="font-semibold text-lg text-gray-900">读书俱乐部</div>
+              <div className="text-sm text-gray-500 mt-2">图书展示与管理平台</div>
             </a>
 
             <a
               href="#"
-              className="block bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5"
+              className="block bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] border border-white/50"
             >
-              <div className="font-medium text-gray-900">茶经说</div>
-              <div className="text-sm text-gray-500 mt-1">茶文化社区网站</div>
+              <div className="font-semibold text-lg text-gray-900">茶经说</div>
+              <div className="text-sm text-gray-500 mt-2">茶文化社区网站</div>
             </a>
           </div>
 
