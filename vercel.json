@@ -1,8 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "next build",
-  "framework": "nextjs",
-  "env": {
-    "VERCEL_FORCE_NO_BUILD_CACHE": "1"
-  }
+  "framework": "nextjs"
 }
