@@ -36,10 +36,47 @@ export default function LearningSection() {
   return (
     <section
       id="learning"
-      className="bg-white py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8"
+      className="relative overflow-hidden bg-white py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8"
       aria-labelledby="learning-heading"
     >
-      <div className="max-w-7xl mx-auto">
+      <svg
+        className="absolute inset-0 h-full w-full pointer-events-none opacity-50"
+        viewBox="0 0 1200 900"
+        fill="none"
+        aria-hidden="true"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <defs>
+          <filter id="gooey-learning">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -7"
+              result="goo"
+            />
+            <feBlend in="SourceGraphic" in2="goo" />
+          </filter>
+        </defs>
+        <g filter="url(#gooey-learning)">
+          <circle cx="210" cy="180" r="90" fill="#43E66033">
+            <animate attributeName="cx" dur="15s" repeatCount="indefinite" values="210;290;240;210" />
+            <animate attributeName="cy" dur="18s" repeatCount="indefinite" values="180;120;240;180" />
+            <animate attributeName="r" dur="11s" repeatCount="indefinite" values="90;118;96;90" />
+          </circle>
+          <circle cx="980" cy="220" r="110" fill="#8B5CF633">
+            <animate attributeName="cx" dur="17s" repeatCount="indefinite" values="980;900;1040;980" />
+            <animate attributeName="cy" dur="14s" repeatCount="indefinite" values="220;300;180;220" />
+            <animate attributeName="r" dur="13s" repeatCount="indefinite" values="110;140;120;110" />
+          </circle>
+          <circle cx="820" cy="700" r="100" fill="#E84BE033">
+            <animate attributeName="cx" dur="19s" repeatCount="indefinite" values="820;740;880;820" />
+            <animate attributeName="cy" dur="16s" repeatCount="indefinite" values="700;620;760;700" />
+            <animate attributeName="r" dur="12s" repeatCount="indefinite" values="100;130;112;100" />
+          </circle>
+        </g>
+      </svg>
+      <div className="relative z-10 max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16 sm:mb-20">
           <p className="text-sm font-bold uppercase tracking-widest text-secondary mb-4">学习心得</p>
@@ -50,7 +87,7 @@ export default function LearningSection() {
             7次课，我学到的
             <br className="hidden sm:inline" />
             <span
-              className="inline-block px-4 py-1 rounded-2xl mt-2"
+              className="glass inline-block px-4 py-1 rounded-2xl mt-2"
               style={{ backgroundColor: '#43E660' }}
             >
               真正有用的东西
@@ -115,9 +152,10 @@ export default function LearningSection() {
               {pathways.map((pathway, idx) => (
                 <li key={idx} className="group">
                   <div
-                    className="flex gap-4 p-4 sm:p-5 rounded-2xl border-2 border-transparent transition-all duration-200 hover:border-current hover:shadow-md"
+                    className="glass-card flex gap-4 rounded-2xl border border-white/10 border-l-4 p-4 sm:p-5 transition-all duration-200 hover:shadow-md"
                     style={{
                       backgroundColor: idx % 2 === 0 ? '#F8F8FF' : '#FFFEF5',
+                      borderLeftColor: 'var(--purple)',
                     }}
                   >
                     <span
@@ -143,8 +181,8 @@ export default function LearningSection() {
 
         {/* Stats bar */}
         <div
-          className="mt-16 sm:mt-20 rounded-3xl p-8 sm:p-10 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center"
-          style={{ backgroundColor: '#1A1A2E' }}
+          className="glass-dark mt-16 sm:mt-20 grid grid-cols-2 gap-6 rounded-3xl p-8 text-center sm:grid-cols-4 sm:p-10"
+          style={{ backgroundColor: 'rgba(26,26,46,0.85)' }}
           aria-label="学习成果统计"
         >
           {[

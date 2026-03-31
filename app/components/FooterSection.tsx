@@ -51,7 +51,7 @@ export default function FooterSection() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="mailto:2069904600@qq.com"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-base sm:text-lg font-bold transition-all duration-200 hover:scale-105 hover:shadow-2xl shadow-lg cursor-pointer"
+              className="glass-strong inline-flex items-center gap-3 px-8 py-4 rounded-full text-base sm:text-lg font-bold transition-all duration-300 hover:scale-105 hover:shadow-2xl shadow-lg cursor-pointer"
               style={{ backgroundColor: '#1A1A2E', color: '#43E660' }}
               aria-label="发送邮件到 2069904600@qq.com"
             >
@@ -80,6 +80,17 @@ export default function FooterSection() {
           </div>
         </div>
       </section>
+
+      {/* SVG Wave separator */}
+      <div className="relative left-0 right-0 pointer-events-none" aria-hidden="true" style={{ marginTop: '-1px' }}>
+        <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-8 sm:h-12" style={{ display: 'block' }}>
+          <path d="M0 0L1440 0L1440 30C1200 60 960 10 720 30C480 50 240 10 0 30L0 0Z" fill="#1A1A2E">
+            <animate attributeName="d"
+              values="M0 0L1440 0L1440 30C1200 60 960 10 720 30C480 50 240 10 0 30L0 0Z;M0 0L1440 0L1440 40C1200 20 960 50 720 20C480 40 240 50 0 40L0 0Z;M0 0L1440 0L1440 30C1200 60 960 10 720 30C480 50 240 10 0 30L0 0Z"
+              dur="6s" repeatCount="indefinite" />
+          </path>
+        </svg>
+      </div>
 
       {/* Dark Footer */}
       <footer
@@ -111,7 +122,7 @@ export default function FooterSection() {
                       href="https://vibewriting.readark.club/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm font-medium transition-colors hover:text-white"
+                      className="text-sm font-medium transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(67,230,96,0.4)]"
                       style={{ color: 'rgba(255,255,255,0.65)' }}
                     >
                       AI写作助手
@@ -122,7 +133,7 @@ export default function FooterSection() {
                       href="https://tai-ping-year.netlify.app/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm font-medium transition-colors hover:text-white"
+                      className="text-sm font-medium transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(67,230,96,0.4)]"
                       style={{ color: 'rgba(255,255,255,0.65)' }}
                     >
                       太平年介绍页
@@ -165,7 +176,7 @@ export default function FooterSection() {
                   <li>
                     <a
                       href="mailto:2069904600@qq.com"
-                      className="text-sm font-medium transition-colors hover:text-white"
+                      className="text-sm font-medium transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(67,230,96,0.4)]"
                       style={{ color: 'rgba(255,255,255,0.65)' }}
                     >
                       邮件联系

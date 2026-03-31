@@ -102,14 +102,12 @@ interface DetailCardProps {
   items: string[];
   accentColor: string;
   textColor: string;
-  bgOpacity?: string;
 }
 
-function DetailCard({ title, items, accentColor, textColor, bgOpacity = 'rgba(255,255,255,0.18)' }: DetailCardProps) {
+function DetailCard({ title, items, accentColor, textColor }: DetailCardProps) {
   return (
     <div
-      className="rounded-2xl p-5 sm:p-6"
-      style={{ backgroundColor: bgOpacity }}
+      className="glass-card rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:shadow-[0_0_20px_rgba(67,230,96,0.15)]"
     >
       <h4
         className="text-base sm:text-lg font-bold mb-3"
@@ -144,8 +142,7 @@ interface ChallengesCardProps {
 function ChallengesCard({ challenges, accentColor, textColor }: ChallengesCardProps) {
   return (
     <div
-      className="rounded-2xl p-5 sm:p-6"
-      style={{ backgroundColor: 'rgba(255,255,255,0.18)' }}
+      className="glass-card rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:shadow-[0_0_20px_rgba(67,230,96,0.15)]"
     >
       <h4
         className="text-base sm:text-lg font-bold mb-3"
@@ -184,24 +181,64 @@ function ProjectSection({ project, index }: { project: ProjectData; index: numbe
       style={{ backgroundColor: project.bgColor }}
       className="relative overflow-hidden"
     >
-      {/* Decorative circle */}
-      <div
-        className="absolute top-[-80px] right-[-80px] w-64 h-64 rounded-full opacity-20 pointer-events-none"
-        style={{ backgroundColor: project.textColor }}
+      <svg
+        className="absolute inset-0 h-full w-full pointer-events-none opacity-60"
+        viewBox="0 0 1200 800"
+        fill="none"
         aria-hidden="true"
-      />
-      <div
-        className="absolute bottom-[-60px] left-[-60px] w-48 h-48 rounded-full opacity-15 pointer-events-none"
-        style={{ backgroundColor: project.textColor }}
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <g filter="url(#gooey-projects)">
+          <circle cx="240" cy="180" r="110" fill="#43E66033">
+            <animate attributeName="cx" dur="14s" repeatCount="indefinite" values="240;340;260;240" />
+            <animate attributeName="cy" dur="16s" repeatCount="indefinite" values="180;120;240;180" />
+            <animate attributeName="r" dur="12s" repeatCount="indefinite" values="110;145;120;110" />
+          </circle>
+          <circle cx="930" cy="180" r="130" fill="#E84BE033">
+            <animate attributeName="cx" dur="18s" repeatCount="indefinite" values="930;860;980;930" />
+            <animate attributeName="cy" dur="15s" repeatCount="indefinite" values="180;260;140;180" />
+            <animate attributeName="r" dur="13s" repeatCount="indefinite" values="130;100;150;130" />
+          </circle>
+          <circle cx="850" cy="560" r="120" fill="#8B5CF633">
+            <animate attributeName="cx" dur="17s" repeatCount="indefinite" values="850;760;900;850" />
+            <animate attributeName="cy" dur="14s" repeatCount="indefinite" values="560;500;640;560" />
+            <animate attributeName="r" dur="11s" repeatCount="indefinite" values="120;150;105;120" />
+          </circle>
+          <circle cx="400" cy="650" r="90" fill="#43E66033">
+            <animate attributeName="cx" dur="19s" repeatCount="indefinite" values="400;500;350;400" />
+            <animate attributeName="cy" dur="17s" repeatCount="indefinite" values="650;590;700;650" />
+            <animate attributeName="r" dur="10s" repeatCount="indefinite" values="90;120;100;90" />
+          </circle>
+        </g>
+      </svg>
+      {/* SVG decorative elements */}
+      <svg
+        className="absolute top-[-40px] right-[-40px] w-64 h-64 opacity-15 pointer-events-none animate-float-slow"
+        viewBox="0 0 200 200"
+        fill="none"
         aria-hidden="true"
-      />
+      >
+        <circle cx="100" cy="100" r="80" stroke={project.textColor} strokeWidth="1.5" strokeDasharray="8 6" />
+        <circle cx="100" cy="100" r="60" stroke={project.textColor} strokeWidth="1" opacity="0.5" />
+        <circle cx="100" cy="100" r="95" fill={project.textColor} opacity="0.08" />
+      </svg>
+      <svg
+        className="absolute bottom-[-30px] left-[-30px] w-48 h-48 opacity-12 pointer-events-none animate-float"
+        viewBox="0 0 160 160"
+        fill="none"
+        aria-hidden="true"
+        style={{ animationDelay: '-4s' }}
+      >
+        <rect x="20" y="20" width="120" height="120" rx="30" stroke={project.textColor} strokeWidth="1.5" transform="rotate(15 80 80)" />
+        <rect x="40" y="40" width="80" height="80" rx="20" fill={project.textColor} opacity="0.06" transform="rotate(15 80 80)" />
+      </svg>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
         {/* Project number + badge */}
         <div className="mb-8 flex items-center gap-4">
           <span
-            className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest"
-            style={{ backgroundColor: project.badgeBg, color: project.badgeText }}
+            className="glass-card inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest"
+            style={{ color: project.badgeText }}
           >
             项目 {String(index + 1).padStart(2, '0')}
           </span>
@@ -228,7 +265,7 @@ function ProjectSection({ project, index }: { project: ProjectData; index: numbe
             href={project.productUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 self-start lg:self-auto px-7 py-3.5 rounded-full text-base font-bold transition-all duration-200 hover:scale-105 hover:shadow-xl shadow-md cursor-pointer flex-shrink-0"
+            className="group inline-flex items-center gap-2 self-start lg:self-auto px-7 py-3.5 rounded-full text-base font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] shadow-md cursor-pointer flex-shrink-0"
             style={{
               backgroundColor: project.textColor,
               color: project.bgColor,
@@ -236,7 +273,7 @@ function ProjectSection({ project, index }: { project: ProjectData; index: numbe
             aria-label={`访问 ${project.title}`}
           >
             访问产品
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </a>
@@ -262,10 +299,9 @@ function ProjectSection({ project, index }: { project: ProjectData; index: numbe
           ))}
         </div>
 
-        {/* Problem statement */}
+        {/* Problem statement - Glassmorphism */}
         <div
-          className="rounded-2xl p-6 sm:p-8 mb-8"
-          style={{ backgroundColor: 'rgba(255,255,255,0.18)' }}
+          className="glass-card rounded-2xl p-6 sm:p-8 mb-8 transition-all duration-300 hover:shadow-[0_0_20px_rgba(67,230,96,0.15)]"
         >
           <h3
             className="text-lg sm:text-xl font-bold mb-3"
@@ -309,6 +345,20 @@ function ProjectSection({ project, index }: { project: ProjectData; index: numbe
 export default function ProjectsSection() {
   return (
     <div id="projects">
+      <svg className="absolute h-0 w-0" aria-hidden="true" focusable="false">
+        <defs>
+          <filter id="gooey-projects">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="22" result="blur" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -8"
+              result="goo"
+            />
+            <feBlend in="SourceGraphic" in2="goo" />
+          </filter>
+        </defs>
+      </svg>
       {/* Section intro on white background */}
       <div className="bg-white px-4 sm:px-6 lg:px-8 pt-20 pb-12 text-center">
         <p className="text-sm font-bold uppercase tracking-widest text-secondary mb-4">产品实践</p>
