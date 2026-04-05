@@ -1,12 +1,71 @@
+'use client';
+
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { prepare, layout, prepareWithSegments, walkLineRanges } from '@chenglou/pretext';
+
+// ── Pretext 字体配置 ──
+const CTA_TITLE_FONT = '900 56px/1.1 "PingFang SC", "Microsoft YaHei", sans-serif';
+const CTA_TITLE_LH = 64;
+const CTA_DESC_FONT = '500 20px/1.6 "PingFang SC", "Microsoft YaHei", sans-serif';
+const CTA_DESC_LH = 32;
+const CTA_TITLE_TEXT = '开始你的AI编程之旅';
+const CTA_DESC_TEXT = '如果你对AI编程、产品探索感兴趣，欢迎与我交流。相信AI工具能让每个人都成为创造者。';
+
 export default function FooterSection() {
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const [ctaHeight, setCtaHeight] = useState<number | undefined>(undefined);
+  const [titleShrinkW, setTitleShrinkW] = useState<number | undefined>(undefined);
+
+  // ── Pretext: 测量 CTA 区域总高度 + 标题 shrinkwrap 宽度 ──
+  const measureCTA = useCallback((containerWidth: number) => {
+    try {
+      const maxW = Math.min(containerWidth - 32, 896); // max-w-4xl
+
+      // 标题 shrinkwrap: 用 walkLineRanges 找到最宽行
+      const titlePrep = prepareWithSegments(CTA_TITLE_TEXT, CTA_TITLE_FONT);
+      let maxLineW = 0;
+      walkLineRanges(titlePrep, maxW, (range) => {
+        if (range.width > maxLineW) maxLineW = range.width;
+      });
+      setTitleShrinkW(Math.ceil(maxLineW) + 8);
+
+      // 总高度预测
+      const titleP = prepare(CTA_TITLE_TEXT, CTA_TITLE_FONT);
+      const titleH = layout(titleP, maxW, CTA_TITLE_LH).height;
+
+      const descP = prepare(CTA_DESC_TEXT, CTA_DESC_FONT);
+      const descH = layout(descP, Math.min(maxW, 576), CTA_DESC_LH).height;
+
+      // 上标签 + 标题 + 描述 + 按钮 + padding
+      setCtaHeight(24 + 24 + titleH + 24 + descH + 40 + 56 + 80);
+    } catch (e) {
+      console.warn('[Pretext] Footer measure fallback:', e);
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = ctaRef.current;
+    if (!el) return;
+    measureCTA(el.offsetWidth);
+    const ro = new ResizeObserver(entries => {
+      for (const entry of entries) measureCTA(entry.contentRect.width);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [measureCTA]);
+
   return (
     <>
-      {/* CTA Banner - Yellow background */}
+      {/* CTA Banner - Yellow background — Pretext 零CLS */}
       <section
+        ref={ctaRef}
         id="contact"
         aria-labelledby="cta-heading"
         className="relative overflow-hidden px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32"
-        style={{ backgroundColor: '#FFC940' }}
+        style={{
+          backgroundColor: '#FFC940',
+          ...(ctaHeight ? { minHeight: `${ctaHeight}px` } : {}),
+        }}
       >
         {/* Decorative blobs */}
         <div
@@ -32,20 +91,22 @@ export default function FooterSection() {
           >
             开始你的旅程
           </p>
+          {/* ★ Shrinkwrap 标题：用 pretext 测量的精确宽度 */}
           <h2
             id="cta-heading"
-            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight mb-6"
-            style={{ color: '#1A1A2E' }}
+            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight mb-6 mx-auto"
+            style={{
+              color: '#1A1A2E',
+              ...(titleShrinkW ? { maxWidth: `${titleShrinkW}px` } : {}),
+            }}
           >
-            开始你的
-            <br />
-            AI编程之旅
+            {CTA_TITLE_TEXT}
           </h2>
           <p
             className="text-lg sm:text-xl font-medium max-w-xl mx-auto mb-10 leading-relaxed"
             style={{ color: '#1A1A2E', opacity: 0.7 }}
           >
-            如果你对AI编程、产品探索感兴趣，欢迎与我交流。相信AI工具能让每个人都成为创造者。
+            {CTA_DESC_TEXT}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

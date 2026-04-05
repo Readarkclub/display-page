@@ -50,3 +50,6 @@ next-env.d.ts
 # development screenshots/previews (root level)
 /*.png
 /image/
+
+# original project subdirectory (now at root)
+/learning-portfolio/

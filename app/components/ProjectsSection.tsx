@@ -1,4 +1,8 @@
+'use client';
+
 import Image from 'next/image';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { prepare, layout } from '@chenglou/pretext';
 
 interface ProjectData {
   title: string;
@@ -97,17 +101,61 @@ const projects: ProjectData[] = [
   },
 ];
 
+// ── Pretext 字体配置（与 CSS 对齐）──
+const CARD_TITLE_FONT = '700 16px/1.4 "PingFang SC", "Microsoft YaHei", sans-serif';
+const CARD_TITLE_LH = 24;
+const CARD_BODY_FONT = '400 14px/1.625 "PingFang SC", "Microsoft YaHei", sans-serif';
+const CARD_BODY_LH = 23;
+const CHALLENGE_TITLE_FONT = '600 14px/1.4 "PingFang SC", "Microsoft YaHei", sans-serif';
+const CHALLENGE_TITLE_LH = 20;
+const CHALLENGE_BODY_FONT = '400 14px/1.625 "PingFang SC", "Microsoft YaHei", sans-serif';
+const CHALLENGE_BODY_LH = 23;
+const CARD_PADDING = 48; // p-5/p-6 ≈ 24*2
+const CARD_TITLE_MB = 12;
+
+/** 用 pretext 测量一张 DetailCard 的内容高度 */
+function measureDetailCard(items: string[], cardWidth: number): number {
+  const innerW = cardWidth - CARD_PADDING;
+  if (innerW <= 0) return 0;
+  const titleH = CARD_TITLE_LH + CARD_TITLE_MB;
+  let totalItemH = 0;
+  for (const item of items) {
+    const p = prepare(item, CARD_BODY_FONT);
+    const h = layout(p, innerW - 14, CARD_BODY_LH).height; // 14px = dot + gap
+    totalItemH += h + 8; // space-y-2
+  }
+  return titleH + totalItemH;
+}
+
+/** 用 pretext 测量一张 ChallengesCard 的内容高度 */
+function measureChallengesCard(challenges: { title: string; solution: string }[], cardWidth: number): number {
+  const innerW = cardWidth - CARD_PADDING;
+  if (innerW <= 0) return 0;
+  const titleH = CARD_TITLE_LH + CARD_TITLE_MB;
+  let totalH = 0;
+  for (const ch of challenges) {
+    const tP = prepare(`[${challenges.indexOf(ch) + 1}] ${ch.title}`, CHALLENGE_TITLE_FONT);
+    const tH = layout(tP, innerW, CHALLENGE_TITLE_LH).height;
+    const sP = prepare(ch.solution, CHALLENGE_BODY_FONT);
+    const sH = layout(sP, innerW - 12, CHALLENGE_BODY_LH).height; // pl-3
+    totalH += tH + sH + 20; // mb + space-y-4
+  }
+  return titleH + totalH;
+}
+
 interface DetailCardProps {
   title: string;
   items: string[];
   accentColor: string;
   textColor: string;
+  minHeight?: number;
 }
 
-function DetailCard({ title, items, accentColor, textColor }: DetailCardProps) {
+function DetailCard({ title, items, accentColor, textColor, minHeight }: DetailCardProps) {
   return (
     <div
       className="glass-card rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:shadow-[0_0_20px_rgba(67,230,96,0.15)]"
+      style={minHeight ? { minHeight: `${minHeight}px` } : undefined}
     >
       <h4
         className="text-base sm:text-lg font-bold mb-3"
@@ -137,12 +185,14 @@ interface ChallengesCardProps {
   challenges: { title: string; solution: string }[];
   accentColor: string;
   textColor: string;
+  minHeight?: number;
 }
 
-function ChallengesCard({ challenges, accentColor, textColor }: ChallengesCardProps) {
+function ChallengesCard({ challenges, accentColor, textColor, minHeight }: ChallengesCardProps) {
   return (
     <div
       className="glass-card rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:shadow-[0_0_20px_rgba(67,230,96,0.15)]"
+      style={minHeight ? { minHeight: `${minHeight}px` } : undefined}
     >
       <h4
         className="text-base sm:text-lg font-bold mb-3"
@@ -174,6 +224,43 @@ function ChallengesCard({ challenges, accentColor, textColor }: ChallengesCardPr
 
 function ProjectSection({ project, index }: { project: ProjectData; index: number }) {
   const isEven = index % 2 === 0;
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [cardMinH, setCardMinH] = useState<number | undefined>(undefined);
+
+  // ── Pretext: 测量三栏卡片，取最大高度做等高 ──
+  const measureCards = useCallback((containerWidth: number) => {
+    try {
+      // 三栏布局: gap=24, 每栏宽度
+      const colCount = containerWidth >= 768 ? 3 : 1;
+      const cardW = colCount === 3
+        ? Math.floor((containerWidth - 24 * 2) / 3)
+        : containerWidth;
+
+      const h1 = measureDetailCard(project.solution, cardW);
+      const h2 = measureChallengesCard(project.challenges, cardW);
+      const h3 = measureDetailCard(project.learnings, cardW);
+
+      if (colCount === 3) {
+        setCardMinH(Math.max(h1, h2, h3) + CARD_PADDING);
+      } else {
+        setCardMinH(undefined); // 单栏不需要等高
+      }
+    } catch (e) {
+      console.warn('[Pretext] ProjectsSection measure fallback:', e);
+      setCardMinH(undefined);
+    }
+  }, [project]);
+
+  useEffect(() => {
+    const el = gridRef.current;
+    if (!el) return;
+    measureCards(el.offsetWidth);
+    const ro = new ResizeObserver(entries => {
+      for (const entry of entries) measureCards(entry.contentRect.width);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [measureCards]);
 
   return (
     <section
@@ -317,24 +404,27 @@ function ProjectSection({ project, index }: { project: ProjectData; index: numbe
           </p>
         </div>
 
-        {/* Detail cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        {/* Detail cards grid — Pretext 等高 */}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           <DetailCard
             title="解决方案"
             items={project.solution}
             accentColor={project.accentColor}
             textColor={project.textColor}
+            minHeight={cardMinH}
           />
           <ChallengesCard
             challenges={project.challenges}
             accentColor={project.accentColor}
             textColor={project.textColor}
+            minHeight={cardMinH}
           />
           <DetailCard
             title="学到的技术"
             items={project.learnings}
             accentColor={project.accentColor}
             textColor={project.textColor}
+            minHeight={cardMinH}
           />
         </div>
       </div>
